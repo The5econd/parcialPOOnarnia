@@ -295,7 +295,7 @@ public class AdminHotel {
             if(PaqueteExiste(nombrePaquete)){
                 bandera = false;
             }
-            if("Ninguno".equals(nombrePaquete)){
+            else if("Ninguno".equals(nombrePaquete)){
                 bandera = false;
             }
             else{
