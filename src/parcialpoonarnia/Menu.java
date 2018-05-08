@@ -28,6 +28,9 @@ public class Menu {
     public void MostrarMenu() {
         AdminHotel admin = new AdminHotel();
         Scanner input = new Scanner(System.in);
+        admin.CrearHabitaciones();
+        admin.PaquetesPredeterminados();
+
         int opcion;
         boolean corriendo = true;
 
