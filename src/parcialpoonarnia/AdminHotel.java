@@ -452,4 +452,35 @@ public class AdminHotel {
         
         Paquetes.add(nuevoPaquete);
     }
+    
+    public boolean validarDui(String dui){
+        boolean flag = true;
+        while(flag){
+            if (dui.length()==9) {
+                char x1;
+                int x, y, cont=0;
+
+                String [] partes = dui.split("-");
+
+                x = Integer.parseInt("" + partes[0].charAt(0));
+
+                for (int i = 0; i < partes[0].length();i++){
+                    y = Integer.parseInt("" + partes[0].charAt(i));
+                    cont += y * (9-i);
+                }
+                y = 10 - (cont % 10);
+                if (y == x || y == 0 || y == 10){
+                    flag = false;
+                    return true;
+                }
+                else{
+                    return false;
+                }
+            }
+            else{
+                return false;
+            }
+        }
+        return true;
+    }
 }
