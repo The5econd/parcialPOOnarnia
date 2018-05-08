@@ -12,6 +12,12 @@ package parcialpoonarnia;
 public class ParcialPOOnarnia {
 
     public static void main(String[] args) {
+        Menu menu;
+        menu = Menu.getInstance();
+        AdminHotel AH = new AdminHotel();
+        AH.CrearHabitaciones();
+        AH.PaquetesPredeterminados();
+        menu.MostrarMenu();
     }
     
 }
