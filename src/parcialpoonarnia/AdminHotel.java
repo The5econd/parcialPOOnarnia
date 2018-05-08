@@ -357,3 +357,75 @@ public class AdminHotel {
             }
         }
     }
+    
+    
+    public void ModificarPaquetes(){
+        Scanner n = new Scanner(System.in);
+        int opcion;
+        boolean bandera = true;
+        while(bandera){
+            System.out.println("1.Mostrar paquetes");
+            System.out.println("2.Cambiar precio");
+            System.out.println("3.Cambiar contenido");
+            System.out.println("4.Salir");
+            opcion = n.nextInt();
+            switch(opcion){
+                case 1:
+                    MostrarPaquetes();
+                    break;
+                case 2:
+                    CambiarPrecioPaquete();
+                    break;
+                case 3:
+                    CambiarContenidoPaquete();
+                    break;
+                case 4:
+                    bandera = false;
+                    break;
+                default:
+                    System.out.println("Ha ingresado un opcion invalida");
+                    break;
+            }
+        }
+    }
+    public void CambiarPrecioPaquete(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("¿Que paquete desea cambiar? ");
+        String n = sc.nextLine();
+        Paquetes.forEach((Paquete paque) -> {
+            if(paque.nombrePaquete.equals(n)){
+                System.out.println("Nuevo precio del paquete: ");
+                double precioNuevo = sc.nextDouble();
+                paque.precioPaquete = precioNuevo;
+            }
+            else{
+                System.out.println("El paquete que desea no existe o ya no esta disponible");
+            }
+        });
+    }
+    
+    public void CambiarContenidoPaquete(){
+        Scanner sc = new Scanner(System.in);
+        System.out.println("¿Que paquete desea cambiar? ");
+        String n = sc.nextLine();
+        Paquetes.forEach((Paquete paque) -> {
+            if(paque.nombrePaquete.equals(n)){
+                System.out.println("Nuevo contenido del paquete: ");
+                String precioNuevo = sc.nextLine();
+                paque.contenidoPaquete = precioNuevo;
+            }
+            else{
+                System.out.println("El paquete que desea no existe o ya no esta disponible");
+            }
+        });
+    }
+////////////////////////////////////////////////////////////////////////////////
+    public void PaquetesPredeterminados(){
+        if(Paquetes == null || Paquetes.isEmpty()){
+            Paquete paqueteBasico = new Paquete("Basico","Acceso a la pisina y acceso a internet ilimitado",10);
+            Paquetes.add(paqueteBasico);
+            Paquete paquetePremium = new Paquete("Premium","acceso al buffet de desayuno, acceso ilimitado a la pisina, servicio a la habitacion,"
+                    + "acceso ilimitado al minibar y acceso a internet ilimitado",150);
+            Paquetes.add(paquetePremium);
+        }
+    }
