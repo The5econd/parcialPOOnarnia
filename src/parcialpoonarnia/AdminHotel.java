@@ -234,11 +234,19 @@ public class AdminHotel {
 ////////////////////////////////////////////////////////////////////////////////
     public void HacerReservacion(){
         Scanner n = new Scanner(System.in);
-        String dui;
-        boolean existeCliente = false;
+        String dui = " ";
+        boolean existeCliente = false, flag = true;
+        
         
         System.out.println("Dui: ");
-        dui = n.nextLine();
+        while (flag){    
+            dui = n.nextLine();
+            if (validarDui(dui) == true){
+                flag = false;
+            }
+            else{
+                System.out.println("Dui invalido, por favor ingrese de nuevo. ");}
+        }
         for(Cliente c: Clientes){
             if(c.getDui().equals(dui)){
                 if(c.VerificarReservacion()){
