@@ -306,3 +306,54 @@ public class AdminHotel {
         cliente.setHabitaciones(Habitaciones);
         cliente.NuevaReservacion(nombrePaquete, piso, numeroHabitacion);
     }
+    
+    public void MostrarPaquetes(){
+        System.out.println("Los paquetes disponibles son los siguientes: ");
+            for(Paquete paquetes:Paquetes){
+                System.out.println("Nombre: " + paquetes.getNombrePaquete());
+                System.out.println("Contenido: " + paquetes.getContenidoPaquete());
+                System.out.println("Precio: " + paquetes.getPrecioPaquete());
+            }
+    }
+    
+    public boolean PaqueteExiste(String nombrePaquete){
+        for(Paquete paquetes: Paquetes){
+            if(paquetes.getNombrePaquete().equals(nombrePaquete)){
+                return true;
+            }
+        }
+        return false;
+    }
+////////////////////////////////////////////////////////////////////////////////
+    public void CancelarReservacion(){
+        Scanner n = new Scanner(System.in);
+        String dui;
+        System.out.println("Dui: ");
+        dui = n.nextLine();
+        for(Cliente cliente:Clientes){
+            if(cliente.getDui().equals(dui)){
+                cliente.CancelarReservacion();
+            }
+        }
+    }
+////////////////////////////////////////////////////////////////////////////////
+    public void ModificarReservacion(){
+        Scanner n = new Scanner(System.in);
+        Scanner f = new Scanner(System.in);        
+        String dui,piso;
+        int numeroHabitacion;
+        System.out.println("Dui: ");
+        dui = n.nextLine();
+        System.out.println("En cual numero de habitacion se encuentra: ");
+        numeroHabitacion = n.nextInt();
+        System.out.println("En cual piso se envuentra: ");
+        piso = f.nextLine();
+        for(Cliente cliente: Clientes){
+            if(cliente.getDui().equals(dui)){
+                cliente.setPaquetes(Paquetes);
+                cliente.setHabitaciones(Habitaciones);
+                cliente.ModificarReservacion(cliente.getInfoCliente(),piso,numeroHabitacion);
+                Habitaciones = cliente.getHabitaciones();
+            }
+        }
+    }
