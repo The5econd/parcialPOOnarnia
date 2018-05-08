@@ -204,7 +204,257 @@ public class Cliente {
             }
         }
     }
+///////////////////////////Modificar Reservacion////////////////////////////////  
+    public void ModificarReservacion(String infoCliente,String pisoHabitacion,int numeroHabitacion){
+        boolean bandera=true,seEncontro = false;
+        Scanner n = new Scanner(System.in);
+        int opcion;
+        for(Reservacion r: Reservaciones){
+            if(r.getInfoHuesped().equals(infoCliente) && r.getNumeroHabitacion() == numeroHabitacion && r.getPisoHabitacion().equals(pisoHabitacion)){
+                seEncontro = true;
+            }
+        }
+        if(seEncontro){
+            for(Reservacion modReservar: Reservaciones){
+                if(modReservar.pisoHabitacion.equals(pisoHabitacion) && modReservar.numeroHabitacion == numeroHabitacion){
+                    while(bandera){
+                        System.out.println("1.Cambiar de piso");
+                        System.out.println("2.Cambiar la cantidad de dias");
+                        System.out.println("3.Cambiar Fecha");
+                        System.out.println("4.Cambiar paquete");
+                        System.out.println("5.Salir");
+                        opcion = n.nextInt();
+                        switch(opcion){
+                            case 1:
+                                CambiarPiso(modReservar);
+                                break;
+                            case 2:
+                                CambiarCantidadDia(modReservar);
+                                break;
+                            case 3:
+                                CambiarFecha(modReservar);
+                                break;
+                            case 4:
+                                CambiarPaquete(modReservar);
+                                break;
+                            case 5:
+                                bandera = false;
+                                break;
+                            default:
+                                System.out.println("No digito ninguna de las opciones anteriores.");
+                                break;
+                        }
+                    }
+                }
+            }
+        }
+        else{
+            System.out.println("Los datos que ha ingresado son erroneos");
+        }
+    }
     
+    public void CambiarPiso(Reservacion reservar){
+        Scanner n =  new Scanner(System.in);
+        boolean bandera = true;
+        double nuevoCostoPorNoche, nuevoCostoTotal;
+        String piso="";
+        int dias = 0;
+        for(int i =0;i<reservar.getDiasReservacion();i++){
+            HabilitarHabitacion(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i);
+        }
+        while(bandera){
+            System.out.println("Digite el nuevo piso(A,B,C,D,E,F): ");
+            while(bandera){
+                piso = n.nextLine();
+                switch(piso){
+                    case "A":
+                    case "B":
+                    case "C":
+                    case "D":
+                    case "E":
+                    case "F":
+                        bandera = false;
+                        break;
+                    default:
+                        System.out.println("Tiene que digitar la letra A, B, C, D, E, F");
+                        break;
+                }
+            }
+            for(int i = 0; i<reservar.getDiasReservacion(); i++){
+                if(VerificarDisponibilidad(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i)){
+                    dias++;
+                }
+            }
+            if(dias != reservar.getDiasReservacion()){
+                System.out.println("No puede escoger ese piso ya que esta ocupado en el día que usted quiere reservar");
+                bandera = true;
+            }
+        }
+        if(reservar.pisoHabitacion.equals(piso)){
+            System.out.println("Ha escogido el mismo piso");
+            for(int i =0;i<reservar.getDiasReservacion();i++){
+                CambiarDisponibilidad(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i);
+            }
+        }
+        else{
+            reservar.setPisoHabitacion(piso);
+            for(int i =0;i<reservar.getDiasReservacion();i++){
+                CambiarDisponibilidad(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i);
+            }
+            nuevoCostoPorNoche = CostoPorNoche(piso,reservar.getNumeroHabitacion(),reservar.getNombrePaquete()) ;
+            reservar.setCostoNoche(nuevoCostoPorNoche);
+            nuevoCostoTotal = nuevoCostoPorNoche * reservar.getDiasReservacion();
+            reservar.setCostoTotal(nuevoCostoTotal);
+        }
+    }
     
+    public void CambiarCantidadDia(Reservacion reservar){
+        Scanner n = new Scanner(System.in);
+        boolean bandera= true;
+        double CostoTotal;
+        int dia=0,cont = 0;
+        for(int i =0;i<reservar.getDiasReservacion();i++){
+            HabilitarHabitacion(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i);
+        }
+        while(bandera){
+            System.out.println("Nueva cantidad de dia/as(maximo de dias 7): ");
+            while(bandera){
+                dia = n.nextInt();
+                if(dia>0 && dia<8){
+                    bandera = false;
+                }
+                else{
+                    System.out.println("La cantidad de dias no tiene que ser mayor a 7");
+                }
+            }
+            for(int i = 0; i<dia; i++){
+                if(VerificarDisponibilidad(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i)){
+                    cont++;
+                }
+            }
+            if(cont != dia){
+                System.out.println("No puede escoger esa cantidad de dias ya que la habitacion que desea ocupar esta ocupada o inhabilitada ");
+                bandera = true;
+            }
+            else{
+                bandera = false;
+            }
+        }
+        if(reservar.diasReservacion == dia){
+            System.out.println("Ha escogido el mismo numero de día.");
+            for(int i =0;i<reservar.getDiasReservacion();i++){
+                CambiarDisponibilidad(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i);
+            }
+        }
+        else{
+            reservar.setDiasReservacion(dia);
+            for(int i =0;i<reservar.getDiasReservacion();i++){
+                CambiarDisponibilidad(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i);
+            }
+            CostoTotal = reservar.getCostoNoche() * dia;
+            reservar.setCostoTotal(CostoTotal);
+        }
+    }
+    
+    public void CambiarFecha(Reservacion reservar){
+        Scanner n = new Scanner(System.in);
+        boolean bandera = true;
+        int fecha=0,cont=0;
+        for(int i =0;i<reservar.getDiasReservacion();i++){
+            HabilitarHabitacion(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i);
+        }
+        while(bandera){
+            System.out.println("Nueva fecha: ");
+            while(bandera){
+                fecha = n.nextInt();
+                if(fecha >0 && fecha < 31){
+                    bandera = false;
+                }
+                else{
+                    System.out.println("El mes es Enero y este solo tiene 30 dias");
+                }
+            }
+            for(int i = 0; i<reservar.getDiasReservacion(); i++){
+                if(VerificarDisponibilidad(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i)){
+                    cont++;
+                }
+            }
+            if(cont != reservar.getDiasReservacion()){
+                System.out.println("No puede escoger esa fecha ya que la habitacion que esta ocupada o inhabilitada ese día");
+                bandera = true;
+            }
+            else{
+                bandera = false;
+            }
+        }
+        if(reservar.Fecha == fecha){
+            System.out.println("Ha escogido la misma fecha");
+            for(int i =0;i<reservar.getDiasReservacion();i++){
+                CambiarDisponibilidad(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i);
+            }
+        }
+        else{
+            reservar.setFecha(fecha);
+            for(int i =0;i<reservar.getDiasReservacion();i++){
+                CambiarDisponibilidad(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),reservar.getFecha()+i);
+            }
+        }
+    }
+    
+    public void CambiarPaquete(Reservacion reservar){
+        Scanner n = new Scanner(System.in);
+        boolean bandera = true;
+        String nombrePaquete="";
+        double costoPorNoche,costoTotal;
+        System.out.println("Nuevo paquete: ");
+        while(bandera){
+            nombrePaquete = n.nextLine();
+            if(PaqueteExiste(nombrePaquete)){
+                bandera = false;
+            }
+            else{
+                System.out.println("El paquete que ha digitado no existe");
+                System.out.println("Los paquetes que estan en este momento son: ");
+                MostrarPaquete();
+            }
+        }
+        if(reservar.nombrePaquete.equals(nombrePaquete)){
+            System.out.println("Ha escogido el mismo paquete");
+        }
+        else{
+            reservar.setNombrePaquete(nombrePaquete);
+            costoPorNoche = CostoPorNoche(reservar.getPisoHabitacion(),reservar.getNumeroHabitacion(),nombrePaquete);
+            reservar.setCostoNoche(costoPorNoche);
+            costoTotal = costoPorNoche * reservar.getDiasReservacion();
+            reservar.setCostoTotal(costoTotal);
+        }
+    }
+    
+    public boolean PaqueteExiste(String nombrePaquete){
+        for(Paquete paquetes: Paquetes){
+            if(paquetes.getNombrePaquete().equals(nombrePaquete)){
+                return true;
+            }
+        }
+        return false;
+    }
+    
+    public void MostrarPaquete(){
+        int n=1;
+        for(Paquete paquetes: Paquetes){
+            System.out.println("Paquete "+n+": " + paquetes.getNombrePaquete());
+            System.out.println("Contenido: " + paquetes.getContenidoPaquete());
+            System.out.println("Precio: " + paquetes.getPrecioPaquete());
+            n++;
+        }
+    }
+    
+    public void HabilitarHabitacion(String pisoHabitacion,int numeroHabitacion, int fecha){
+        for(Habitacion h: Habitaciones){
+            if(h.getPiso().equals(pisoHabitacion) && h.getNumero() == numeroHabitacion){
+                h.DisponibilidadMes.set(fecha,"Disponible");
+            }
+        }
+    }
 }
 
