@@ -357,6 +357,7 @@ public class AdminHotel {
             }
         }
     }
+////////////////////////////////////////////////////////////////////////////////
     
     
     public void ModificarPaquetes(){
@@ -388,6 +389,8 @@ public class AdminHotel {
             }
         }
     }
+////////////////////////////////////////////////////////////////////////////////
+    
     public void CambiarPrecioPaquete(){
         Scanner sc = new Scanner(System.in);
         System.out.println("¿Que paquete desea cambiar? ");
@@ -403,6 +406,7 @@ public class AdminHotel {
             }
         });
     }
+////////////////////////////////////////////////////////////////////////////////
     
     public void CambiarContenidoPaquete(){
         Scanner sc = new Scanner(System.in);
@@ -429,7 +433,7 @@ public class AdminHotel {
             Paquetes.add(paquetePremium);
         }
     }
-    
+////////////////////////////////////////////////////////////////////////////////
     public void CrearPaquete(){  
         Scanner sc = new Scanner(System.in);
         String nombrePaquete,contenidoPaquete;
