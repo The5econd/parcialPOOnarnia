@@ -452,3 +452,4 @@ public class AdminHotel {
         
         Paquetes.add(nuevoPaquete);
     }
+}
