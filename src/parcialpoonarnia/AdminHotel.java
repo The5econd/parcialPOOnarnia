@@ -429,3 +429,22 @@ public class AdminHotel {
             Paquetes.add(paquetePremium);
         }
     }
+    
+    public void CrearPaquete(){  
+        Scanner sc = new Scanner(System.in);
+        String nombrePaquete,contenidoPaquete;
+        double precioPaquete;
+        
+        System.out.println("Introduzca el nombre del paquete: ");
+        nombrePaquete = sc.nextLine();
+        
+        System.out.println("Introduzca el contenido del paquete: ");
+        contenidoPaquete = sc.nextLine();
+        
+        System.out.println("Introduzca el precio del paquete: ");
+        precioPaquete = sc.nextDouble();
+        
+        Paquete nuevoPaquete = new Paquete(nombrePaquete,contenidoPaquete,precioPaquete);
+        
+        Paquetes.add(nuevoPaquete);
+    }
